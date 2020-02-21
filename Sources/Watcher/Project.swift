@@ -22,13 +22,15 @@ protocol CoreProject: Codable, Equatable {
     static func createNewProject(account: inout Account) -> Self
     static func loadProject(account: Account) -> Self?
     func addFiles() throws
-    func modifyProject()
-    func deleteProject()
+    mutating func modifyProject()
+    mutating func deleteTask(_ task: Task)
+    mutating func updateTask(_ task: Task)
     
 }
 
 
 struct Project: CoreProject {
+    
     static func == (lhs: Project, rhs: Project) -> Bool {
         return lhs.id == rhs.id && lhs.name == rhs.name && lhs.createdBy == rhs.createdBy
     }
@@ -62,6 +64,7 @@ struct Project: CoreProject {
         return project
     }
     
+    
     static func loadProject(account: Account) -> Project? {
         let name = consoleInput(annotation: "Enter project name: ")
         
@@ -71,10 +74,12 @@ struct Project: CoreProject {
         
     }
     
+    
     static func readProjects(account: Account) -> [Project] {
         let projects: [Project] = account.projects
         return projects
     }
+    
     
     func addFiles() throws {
         let filePath = consoleInput(annotation: "Enter file path: ")
@@ -89,17 +94,32 @@ struct Project: CoreProject {
     }
     
     
-    func modifyProject() {
-        
+    mutating func modifyProject() {
+        print("Enter 0 for default values")
+        let name = consoleInput(annotation: "Enter project name: ")
+        let description = consoleInput(annotation: "Enter project description: ")
+        let category = consoleInput(annotation: "Enter project category (Optional): ", required: false).engageSecure()
+        let tags = consoleInput(annotation: "Enter project tags (Optional): ", required: false).engageSecure()
+        self.name = name == "0" ? self.name : name
+        self.description = description == "0" ? self.description : description
+        self.category = category == "0" ? self.category : category
+        self.tags = tags == "0" ? self.tags : tags
     }
     
-    func deleteProject() {
-        
+    
+    mutating func deleteTask(_ task: Task) {
+        self.tasks.removeAll(where: { $0.key == task.key })
     }
+    
+    
+    mutating func updateTask(_ task: Task) {
+        self.tasks.removeAll(where: { $0.key == task.key })
+        self.tasks.append(task)
+    }
+    
     
     func exportProject(account: Account) {
-        
+        /// TODO:- Figure out if this means anything
     }
-    
     
 }
