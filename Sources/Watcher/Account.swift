@@ -27,6 +27,7 @@ protocol CoreAccount: Codable, Equatable, Security {
     static func login() -> Self?
     static func loadAccount(username: String, email: String?) -> Self
     mutating func updateProject(_ project: Project)
+    mutating func deleteProject(_ project: Project)
     func exportAccount(encrypted: Bool)
     static func verify(username: String, currentKey: String) -> Self?
     func signOut()
@@ -104,6 +105,10 @@ struct Account: CoreAccount {
     mutating func updateProject(_ project: Project) {
         self.projects.removeAll(where: { $0.id == project.id })
         self.projects.append(project)
+    }
+    
+    mutating func deleteProject(_ project: Project) {
+        self.projects.removeAll(where: { $0.id == project.id })
     }
     
     func exportAccount(encrypted: Bool) {
