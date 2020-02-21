@@ -81,7 +81,7 @@ struct JSOC: JSONOperator {
             data = try aes.encrypt(bytes).data
         }
         
-        try data.write(to: fileURL)
+        try data.write(to: fileURL, options: .atomic)
     }
     
 }
