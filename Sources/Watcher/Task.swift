@@ -21,6 +21,7 @@ enum Status: String, Codable {
 }
 
 protocol CoreTask: Codable {
+    
     var key: String { get set }
     var priority: Priority { get set }
     var objective: String { get set }
@@ -33,10 +34,10 @@ protocol CoreTask: Codable {
     var author: String { get set }
     
     static func newTask(account: Account, project: inout Project) -> Self
-    static func loadTask()
+    static func loadTask(project: Project) -> Self?
     func addReminder()
-    func editTask()
-    func dropTask()
+    mutating func editTask()
+
 }
 
 
@@ -85,19 +86,38 @@ struct Task: CoreTask {
         
     }
     
-    static func loadTask() {
-        <#code#>
+    
+    static func loadTask(project: Project) -> Task? {
+        let taskID = consoleInput(annotation: "Enter task id: ")
+        
+        let projects = project.tasks
+        let selection = projects.filter({ $0.author == project.createdBy && $0.key == taskID })
+        return selection.first
     }
+    
     
     func addReminder() {
-        
+        // Go for a cron job and find out a way for generating notification 
     }
     
-    func editTask() {
-        <#code#>
+    
+    mutating func editTask() {
+        print("[*] Enter 0 for default value")
+        let priority = consoleInput(annotation: "Enter priority [low|medium|high]: ")
+        let objective = consoleInput(annotation: "Enter task objective: ")
+        let desc = consoleInput(annotation: "Enter task description: ")
+        let start = consoleInput(annotation: "Enter start date (Optional): ", required: false).engageSecure()
+        let end = consoleInput(annotation: "Enter expected end date (Optional): ", required: false).engageSecure()
+        let status = consoleInput(annotation: "Enter current status [ waiting | inProgress | completed | abort ]: ")
+        let dependency = consoleInput(annotation: "Enter comma separated task id(s) this task depends on (Optional): ", required: false).engageSecure()
+        
+        self.priority = priority == "0" ? self.priority : Priority(rawValue: priority)!
+        self.objective = objective == "0" ? self.objective : objective
+        self.description = desc == "0" ? self.description : desc
+        self.start = start == "0" ? self.start : start
+        self.end = end == "0" ? self.end : end
+        self.status = status == "0" ? self.status : Status(rawValue: status)!
+        self.dependentOn = dependency == "0" ? self.dependentOn : dependency
     }
     
-    func dropTask() {
-        
-    }
 }
