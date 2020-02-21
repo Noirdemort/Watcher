@@ -107,9 +107,11 @@ struct Account: CoreAccount {
         self.projects.append(project)
     }
     
+    
     mutating func deleteProject(_ project: Project) {
         self.projects.removeAll(where: { $0.id == project.id })
     }
+    
     
     func exportAccount(encrypted: Bool) {
         JSOC.jdam.updateCore(self)
@@ -121,6 +123,7 @@ struct Account: CoreAccount {
             exit(EXIT_FAILURE)
         }
     }
+    
     
     func signOut() {
         exit(EXIT_SUCCESS)
