@@ -92,6 +92,7 @@ struct Account: CoreAccount {
         return nil
     }
     
+    
     static func loadAccount(username: String, email: String?) -> Account {
         let accounts = JSOC.jdam.allAccounts
         guard let account =  accounts.first(where: { $0.username == username}) else {
@@ -101,6 +102,7 @@ struct Account: CoreAccount {
         
         return account
     }
+    
     
     mutating func updateProject(_ project: Project) {
         self.projects.removeAll(where: { $0.id == project.id })
@@ -182,5 +184,6 @@ struct Account: CoreAccount {
     static func saltGenerator(length: Int = 10) -> String {
         return UUID().uuidString
     }
+    
 }
 

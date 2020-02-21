@@ -82,6 +82,7 @@ struct JSOC: JSONOperator {
         }
         
         try data.write(to: fileURL, options: .atomic)
+        
     }
     
 }

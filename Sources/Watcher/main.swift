@@ -2,5 +2,6 @@ import Foundation
 
 /// TODO: Using Some Command Line for Interface
 
-var account = Account.loadAccount(username: "noir", email: nil)
+let args = CommandLine.arguments
+var account = Account.loadAccount(username: "user", email: nil)
 print(Project.readProjects(account: account))
