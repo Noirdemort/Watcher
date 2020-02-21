@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 // MARK:- Global Functions
 func consoleInput(annotation: String, required: Bool = true, secureInput: Bool = false) -> String {
     
@@ -49,12 +50,14 @@ extension String {
     }
 }
 
+
 // MARK:- Data to [bytes]
 extension Data {
     var bytes : [UInt8]{
         return [UInt8](self)
     }
 }
+
 
 // MARK:- [bytes] to Data
 extension Array where Element == UInt8 {
